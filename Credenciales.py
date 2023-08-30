@@ -1,0 +1,2 @@
+#Aqui insertamos los datos de la base de datos de la que vamos a extraer la data
+datosbdd = "Driver={ODBC Driver 17 for SQL Server}; \n Server=DESKTOP-MR17TOI\MSSQLSERVER01; \n Database=Biblioteca; \n Trusted_Connection=yes;"
