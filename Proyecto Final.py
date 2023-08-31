@@ -17,8 +17,8 @@ bdd.attributes("-fullscreen", True)
 
 #creamos una funcion que imprima la lista de libros disponibles
 def tabla_libros_disponibles():
-    crear_lista("Libros",2,1,18)
-    crear_lista("Disponibles",3,1,18)
+    crear_titulo("Libros",2,1,18)
+    crear_titulo("Disponibles",3,1,18)
     crear_lista("ID",1,2, 5)
     crear_lista("Titulo",2,2,18)
     crear_lista("Autor",3,2,18)
@@ -48,7 +48,12 @@ def cambio_ventana1():
 
 #Definimos una funcion que cree un label para las tablas
 def crear_lista(texto, columna, fila, ancho):
-    label = tk.Label(Contenedor,text=texto,bg="white",pady=15, width=ancho)
+    label = tk.Label(Contenedor,text=texto,bg="#F5F5F5",pady=15, width=ancho)
+    label.grid(row=fila,column=columna)
+
+#Definimos una funcion que crea titulos para las tablas
+def crear_titulo(texto, columna, fila, ancho):
+    label = tk.Label(Contenedor,text=texto,bg="#181624", fg="#F5F5F5" ,pady=15, width=ancho)
     label.grid(row=fila,column=columna)
 
 ####################################################################################################################################
@@ -75,19 +80,19 @@ Fondo_menu_inicial = tk.Label(Menu_inicial, image = Fondo_inicial)
 Fondo_menu_inicial.place(x=0,y=0,relwidth=1,relheight=1)
 
 #Creamos un label donde pondremos el nombre de la biblioteca
-Titulo_biblioteca = tk.Label(Menu_inicial, text = "El Palacio Del Conocimiento", font = Fuente_titulo_biblioteca, bg = "Magenta4")
+Titulo_biblioteca = tk.Label(Menu_inicial, text = "El Palacio Del Conocimiento", font = Fuente_titulo_biblioteca, bg = "#E8BBE9")
 Titulo_biblioteca.place(x=50,y=50)
 
 #Creamos un boton a traves del cual accederemos al programa
-Boton_empezar = tk.Button(Menu_inicial, text = "Acceder", font = Fuente_botones, command = cambio_ventana1 ,bg = "cyan4")
+Boton_empezar = tk.Button(Menu_inicial, text = "Acceder", font = Fuente_botones, command = cambio_ventana1 ,bg = "#C2A5E9")
 Boton_empezar.place(x=150,y=300)
 
 #Creamos un boton que nos permita cerrar la ventana
-Boton_cerrar = tk.Button(Menu_inicial, text="Cerrar Ventana", font = Fuente_botones ,command = cerrar_bdd ,bg ="HotPink3")
+Boton_cerrar = tk.Button(Menu_inicial, text="Cerrar Ventana", font = Fuente_botones ,command = cerrar_bdd ,bg ="#F5F5F5")
 Boton_cerrar.place(x=50,y=600)
 
 #Creamos un label donde ira el nombre del creador del programa
-Creador = tk.Label(Menu_inicial, text = "Nicolas Luna\nIngenieria en Sistemas\nSegundo Semestre", font = Fuente_datos_presentacion , bg = "RoyalBlue4")
+Creador = tk.Label(Menu_inicial, text = "Nicolas Luna\nIngenieria en Sistemas\nSegundo Semestre", font = Fuente_datos_presentacion , bg = "#564E87")
 Creador.place(x=975,y=650)
 
 #Creamos un segundo marco donde se contendra la interfaz principal de la biblioteca para
@@ -98,13 +103,16 @@ Fondo_ventana_1 = tk.Label(Ventana_1, image=Fondo_1)
 Fondo_ventana_1.place(x=0, y=0,relheight=1,relwidth=1)
 
 #Creamos un label donde ira el nombre de la biblioteca
-Titulo_biblioteca2 = tk.Label(Ventana_1, text="El Palacio Del Conocimiento", font=Fuente_titulo_biblioteca2, bg="magenta3")
+Titulo_biblioteca2 = tk.Label(Ventana_1, text="El Palacio Del Conocimiento", font=Fuente_titulo_biblioteca2, bg="#C2A5E9")
 Titulo_biblioteca2.place(x=40,y=50)
 
 #Creamos los labels y el frame que nos serviran como contenedores para los datos
-Contenedor = tk.Frame(Ventana_1, bg="gray11", pady=5,padx=5)
+Contenedor = tk.Frame(Ventana_1, bg="#181624", pady=5,padx=5)
 Contenedor.place(x=1,y=180)
 tabla_libros_disponibles()
+
+#Creamos un contenedor donde iran los botones de la interfaz
+Contenedor_botones = tk.Frame(Ventana_1, bg="#F5F5F5")
 
 #Creamos un boton con el que podamos cerrar la ventana
 Boton_cerrar2 = tk.Button(Ventana_1, text="X", font=Fuente_boton_cerrar, command=cerrar_bdd, bg="red2")
