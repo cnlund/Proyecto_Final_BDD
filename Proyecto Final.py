@@ -117,11 +117,11 @@ Contenedor_botones.place(x=700, y=180)
 
 #Creamos el boton que llevara a la pestaña de gestion de clientes
 Boton_clientes = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Clientes", font=Fuente_botones)
-Boton_clientes.pack()
+Boton_clientes.grid(row=1,column=1)
 
 #Creamos el boton que llevara a la pestaña de gestion de prestamos
 Boton_prestamos = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Prestamos", font=Fuente_botones)
-Boton_prestamos.pack()
+Boton_prestamos.grid(row=3,column=1)
 
 #Creamos un boton con el que podamos cerrar la ventana
 Boton_cerrar2 = tk.Button(Ventana_1, text="X", font=Fuente_boton_cerrar, command=cerrar_bdd, bg="red2")
