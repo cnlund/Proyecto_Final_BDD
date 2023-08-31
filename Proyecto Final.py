@@ -66,7 +66,7 @@ Fondo_1 = PhotoImage(file = "Ventana1.png")
 
 #Creamos las tipografias especificas para las diversas partes del programa
 Fuente_botones = font.Font(family = "Fragment Core", size=50)
-Fuente_datos_presentacion = font.Font(family = "Times New Roman", size=45)
+Fuente_datos_presentacion = font.Font(family = "Times New Roman", size=40)
 Fuente_titulo_biblioteca = font.Font(family = "Letter ^  Blocks", size=40)
 Fuente_boton_cerrar = font.Font(family = "Fragment Core", size=53)
 Fuente_titulo_biblioteca2 = font.Font(family = "Letter ^  Blocks", size=45)
@@ -93,7 +93,7 @@ Boton_cerrar.place(x=50,y=600)
 
 #Creamos un label donde ira el nombre del creador del programa
 Creador = tk.Label(Menu_inicial, text = "Nicolas Luna\nIngenieria en Sistemas\nSegundo Semestre", font = Fuente_datos_presentacion , bg = "#564E87")
-Creador.place(x=975,y=650)
+Creador.place(x=1050,y=625)
 
 #Creamos un segundo marco donde se contendra la interfaz principal de la biblioteca para
 Ventana_1 = tk.Frame(bdd)
@@ -108,11 +108,20 @@ Titulo_biblioteca2.place(x=40,y=50)
 
 #Creamos los labels y el frame que nos serviran como contenedores para los datos
 Contenedor = tk.Frame(Ventana_1, bg="#181624", pady=5,padx=5)
-Contenedor.place(x=1,y=180)
+Contenedor.place(x=10,y=180)
 tabla_libros_disponibles()
 
 #Creamos un contenedor donde iran los botones de la interfaz
-Contenedor_botones = tk.Frame(Ventana_1, bg="#F5F5F5")
+Contenedor_botones = tk.Frame(Ventana_1, bg="#F5F5F5", padx=5,pady=5)
+Contenedor_botones.place(x=700, y=180)
+
+#Creamos el boton que llevara a la pestaña de gestion de clientes
+Boton_clientes = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Clientes", font=Fuente_botones)
+Boton_clientes.pack()
+
+#Creamos el boton que llevara a la pestaña de gestion de prestamos
+Boton_prestamos = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Prestamos", font=Fuente_botones)
+Boton_prestamos.pack()
 
 #Creamos un boton con el que podamos cerrar la ventana
 Boton_cerrar2 = tk.Button(Ventana_1, text="X", font=Fuente_boton_cerrar, command=cerrar_bdd, bg="red2")
