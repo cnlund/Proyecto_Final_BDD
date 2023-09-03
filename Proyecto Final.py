@@ -225,7 +225,7 @@ Boton_cerrar2.place(x=1423, y=0)
 
 #Usamos el metodo mainloop para que al ejecutar el codigo la ventana sea visible
 bdd.mainloop()
-################################ En esta zona hacemos la peticion al sql de los libros que esten prestados ################################
+############################## En esta zona hacemos la peticion al sql de los libros que esten prestados ###########################
 '''
 En la base de datos llamada "Biblioteca" en la que hay una tabla con le nombre 
 "Libro" extraigo todas la filas que tengan en la columna "Libro_estado" un numero distinto de 1, 
@@ -263,3 +263,44 @@ else:
     print("No se encontraron resultados")
 
 '''
+####################################################################################################################################
+
+################################### En esta zona hacemos la peticion al sql de ingreso de datos ####################################
+
+'''
+Va ha hacer el ingreso de datos pero te advierto que es algo basico descarta mucho posibles errores de usuario
+Es funcion mientras se cumpla las normas basicas de la contrsuccion de la base de datos.
+
+try:
+    # Captura de datos desde el usuario
+    libro_id = input("Ingrese el valor para Libro_id: ")
+    titulo = input("Ingrese el título del libro: ")
+    autor = input("Ingrese el autor del libro: ")
+    fecha_publicacion = input("Ingrese la fecha de publicación del libro (DD/MM/AAAA): ")
+    estado = input("Ingrese el estado del libro (1 para disponible, 0 para no disponible): ")
+
+    # Validaciones de tipos de datos
+    try:
+        libro_id = int(libro_id)
+        estado = int(estado)
+    except ValueError:
+        print("Error: Libro_id y estado deben ser números enteros (1 para disponible, cualquier otro numero para no disponible)")
+        exit(1)
+
+    # Inserta los datos en la tabla "Libro"
+    cursor.execute("INSERT INTO Libro (Libro_id, Libro_titulo, Libro_autor, Libro_fecha_publicacion, Libro_estado) VALUES (?, ?, ?, ?, ?)",
+                   (libro_id, titulo, autor, fecha_publicacion, estado))
+
+    # Confirma los cambios en la base de datos
+    conexion.commit()
+    print("Registro insertado exitosamente en la tabla 'Libro'.")
+
+except Exception as e:
+    print(f"Error: {str(e)}")
+
+finally:
+    # Cierra el cursor y la conexión a la base de datos
+    cursor.close()
+    conexion.close()
+'''
+####################################################################################################################################
