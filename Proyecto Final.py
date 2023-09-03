@@ -15,23 +15,52 @@ bdd.attributes("-fullscreen", True)
 
 ################################ En esta zona iran los comandos de pyodbc que se necesitan ejecutar ################################
 
-#creamos una funcion que imprima la lista de libros disponibles
-def tabla_libros_disponibles():
-    crear_titulo("Libros",2,1,18)
-    crear_titulo("Disponibles",3,1,18)
-    crear_lista("ID",1,2, 5)
-    crear_lista("Titulo",2,2,18)
-    crear_lista("Autor",3,2,18)
-    crear_lista("Fecha de Publicacion",4,2,20)
+#Creamos una funcion que imprima la lista de libros disponibles
+def tabla_libros_disponibles(contenedor):
+    crear_titulo(contenedor,"Libros",2,1,18)
+    crear_titulo(contenedor,"Disponibles",3,1,18)
+    crear_lista(contenedor,"ID",1,2, 5)
+    crear_lista(contenedor,"Titulo",2,2,18)
+    crear_lista(contenedor,"Autor",3,2,18)
+    crear_lista(contenedor,"Fecha de Publicacion",4,2,20)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Libro WHERE Libro.Libro_estado = 1")
     i=3
     for row in cursor:
-        crear_lista(row.Libro_id,1, i, 5)
-        crear_lista(row.Libro_titulo,2,i,18)
-        crear_lista(row.Libro_autor,3,i,18)
-        crear_lista(row.Libro_fecha_publicacion,4,i,20)
+        crear_lista(contenedor,row.Libro_id,1, i, 5)
+        crear_lista(contenedor,row.Libro_titulo,2,i,18)
+        crear_lista(contenedor,row.Libro_autor,3,i,18)
+        crear_lista(contenedor,row.Libro_fecha_publicacion,4,i,20)
         i=i+1
+
+#Creamos una funcion que imprima la lista de clientes existentes
+def tabla_clientes_existentes(contenedor):
+    crear_titulo(contenedor,"Lista de",2,1,18)
+    crear_titulo(contenedor,"Clientes",3,1,18)
+    crear_lista(contenedor,"ID",1,2,5)
+    crear_lista(contenedor,"Nombre",2,2,18)
+    crear_lista(contenedor,"Correo",3,2,18)
+    crear_lista(contenedor,"Telefono",4,2,18)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Cliente")
+    i=3
+    for row in cursor:
+        crear_lista(contenedor,row.Cliente_id,1, i, 5)
+        crear_lista(contenedor,row.Cliente_nombre,2,i,18)
+        crear_lista(contenedor,row.Cliente_email,3,i,18)
+        crear_lista(contenedor,row.Cliente_tel,4,i,18)
+        i=i+1
+
+#Creamos una funcion que busque un cliente en especifico
+def buscar_cliente(correo):
+    cursor = conn.cursor()
+    query = ("SELECT * FROM Cliente WHERE Cliente_email LIKE (CAST(? AS VARCHAR(50)))")
+    cursor.execute(query, f"%{correo}%")
+    for row in cursor:
+        crear_lista(Respuesta,row.Cliente_id,1, 1, 5)
+        crear_lista(Respuesta,row.Cliente_nombre,2,1,18)
+        crear_lista(Respuesta,row.Cliente_email,3,1,18)
+        crear_lista(Respuesta,row.Cliente_tel,4,1,18)
 
 ####################################################################################################################################
 
@@ -47,14 +76,27 @@ def cambio_ventana1():
     Ventana_1.place(x=0,y=0,relwidth=1,relheight=1)
 
 #Definimos una funcion que cree un label para las tablas
-def crear_lista(texto, columna, fila, ancho):
-    label = tk.Label(Contenedor,text=texto,bg="#F5F5F5",pady=15, width=ancho)
+def crear_lista(contenedor,texto, columna, fila, ancho):
+    label = tk.Label(contenedor,text=texto,bg="#F5F5F5",pady=5, width=ancho)
     label.grid(row=fila,column=columna)
 
 #Definimos una funcion que crea titulos para las tablas
-def crear_titulo(texto, columna, fila, ancho):
-    label = tk.Label(Contenedor,text=texto,bg="#181624", fg="#F5F5F5" ,pady=15, width=ancho)
+def crear_titulo(contenedor,texto, columna, fila, ancho):
+    label = tk.Label(contenedor,text=texto,bg="#181624", fg="#F5F5F5" ,pady=15, width=ancho)
     label.grid(row=fila,column=columna)
+
+#Definimos una funcion que desaparezca la pantalla inicial y active el menu de gestion de clientes
+def cambio_ventana2():
+    contenedor.place_forget()
+    Contenedor_botones.place_forget()
+    Contenedor_buscador.place(x=500,y=190)
+    Contenedor_lista_clientes.place(x=10,y=190)
+    Respuesta.place(x=500,y=300)
+
+#Definimos una funcion que ejecute el buscador
+def pulsar_buscar_cliente():
+    email_ingresado = Buscador.get()
+    buscar_cliente(email_ingresado)
 
 ####################################################################################################################################
 
@@ -66,6 +108,7 @@ Fondo_1 = PhotoImage(file = "Ventana1.png")
 
 #Creamos las tipografias especificas para las diversas partes del programa
 Fuente_botones = font.Font(family = "Fragment Core", size=50)
+Fuente_botones2 = font.Font(family = "Fragment Core", size=30)
 Fuente_datos_presentacion = font.Font(family = "Times New Roman", size=40)
 Fuente_titulo_biblioteca = font.Font(family = "Letter ^  Blocks", size=40)
 Fuente_boton_cerrar = font.Font(family = "Fragment Core", size=53)
@@ -107,21 +150,51 @@ Titulo_biblioteca2 = tk.Label(Ventana_1, text="El Palacio Del Conocimiento", fon
 Titulo_biblioteca2.place(x=40,y=50)
 
 #Creamos los labels y el frame que nos serviran como contenedores para los datos
-Contenedor = tk.Frame(Ventana_1, bg="#181624", pady=5,padx=5)
-Contenedor.place(x=10,y=180)
-tabla_libros_disponibles()
+contenedor = tk.Frame(Ventana_1, bg="#181624", pady=5,padx=5)
+contenedor.place(x=10,y=180)
+tabla_libros_disponibles(contenedor)
 
 #Creamos un contenedor donde iran los botones de la interfaz
 Contenedor_botones = tk.Frame(Ventana_1, bg="#F5F5F5", padx=5,pady=5)
 Contenedor_botones.place(x=700, y=180)
 
 #Creamos el boton que llevara a la pestaña de gestion de clientes
-Boton_clientes = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Clientes", font=Fuente_botones)
-Boton_clientes.pack()
+Boton_clientes = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Clientes", font=Fuente_botones, command=cambio_ventana2)
+Boton_clientes.grid(row=1,column=1)
+
+#Creamos un separador para colocar el buscador
+Contenedor_buscador = tk.Frame(Ventana_1, bg="#F5F5F5")
+
+#Creamos una entrada de texto para crear el buscador
+Buscador = tk.Entry(Contenedor_buscador, font=Fuente_botones, bg="#E8BBE9")
+Buscador.grid(row=1,column=1)
+
+#Creamos un boton que envie el texto ingresado al programa
+Buscar = tk.Button(Contenedor_buscador, text="Buscar",font=Fuente_botones2, bg="#C2A5E9",height=1, command=pulsar_buscar_cliente)
+Buscar.grid(row=1, column=2)
+
+#Creamos un contenedor donde se inserte el cliente buscado
+Respuesta = tk.Frame(Ventana_1, bg="#181624",padx=5,pady=5)
+
+#Creamos un contenedor donde se van a colocar las listas de clientes
+Contenedor_lista_clientes = tk.Frame(Ventana_1, bg="#181624")
+tabla_clientes_existentes(Contenedor_lista_clientes)
+
+#Creamos un contenedor que haga de separador entre los botones
+Separador1 = tk.Frame(Contenedor_botones, bg="#F5F5F5", height=75)
+Separador1.grid(row=2,column=1)
 
 #Creamos el boton que llevara a la pestaña de gestion de prestamos
 Boton_prestamos = tk.Button(Contenedor_botones, bg="#564E87",text="Gestion de Prestamos", font=Fuente_botones)
-Boton_prestamos.pack()
+Boton_prestamos.grid(row=3,column=1)
+
+#Creamos un contenedor que haga de separador entre los botones
+Separador2 = tk.Frame(Contenedor_botones, bg="#F5F5F5", height=75)
+Separador2.grid(row=4,column=1)
+
+#Creamos el boton que llevara a la pestaña de recibir libros
+Boton_prestamos = tk.Button(Contenedor_botones, bg="#564E87",text="Recibir Libros", font=Fuente_botones)
+Boton_prestamos.grid(row=5,column=1)
 
 #Creamos un boton con el que podamos cerrar la ventana
 Boton_cerrar2 = tk.Button(Ventana_1, text="X", font=Fuente_boton_cerrar, command=cerrar_bdd, bg="red2")
@@ -131,43 +204,3 @@ Boton_cerrar2.place(x=1423, y=0)
 
 #Usamos el metodo mainloop para que al ejecutar el codigo la ventana sea visible
 bdd.mainloop()
-
-
-################################################  Me canicas de busqueda de usurios ################################################
-'''
-#Establecemos la conneccion con la BDD a traves de pyodbc y las credenciales almacenadas en otro archivo
-conn = pyodbc.connect(datosbdd)
-
-# Crea un cursor para ejecutar consultas SQL
-cursor = conn.cursor()
-
-# Solicita al usuario que ingrese el texto a buscar ❤️🤢😈‼️ OJO AL PIOJO ‼️❤️🤢😈 no c como ballas ha hacer la funcion de activacion de busqueda con la libreria
-Cliente_email = input("Ingrese el Correo del Cliente: ")
-
-# Consulta SQL para buscar el texto en la columna 'Cliente email' y obtener los resultados
-query = f"SELECT * FROM Cliente WHERE [Cliente_email] LIKE '%{Cliente_email}%'"
-
-# Ejecuta la consulta
-cursor.execute(query)
-
-# Inicializa un arreglo para almacenar los resultados
-Resultados_Cliente_emai = []
-
-# Itera a través de las filas de resultados y agrega cada fila formateada a 'resultados'
-for row in cursor:
-    resultado_formateado = tuple(map(str, row))  # Convierte todos los elementos a cadenas
-    Resultados_Cliente_emai.append(resultado_formateado)
-
-# Cierra el cursor y la conexión
-cursor.close()
-conn.close()
-
-# Muestra los resultados encontrados
-if len(Resultados_Cliente_emai) > 0:
-    print("Resultados encontrados:")
-    for row in Resultados_Cliente_emai:
-        print(row)
-else:
-    print("No se encontraron resultados para el texto ingresado.")
-'''
-####################################################################################################################################
