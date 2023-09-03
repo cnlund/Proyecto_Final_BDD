@@ -204,3 +204,46 @@ Boton_cerrar2.place(x=1423, y=0)
 
 #Usamos el metodo mainloop para que al ejecutar el codigo la ventana sea visible
 bdd.mainloop()
+
+
+
+################################ En esta zona hacemos la peticion al sql de los libros que esten prestados ################################
+
+'''
+En la base de datos llamada "Biblioteca" en la que hay una tabla con le nombre 
+"Libro" extraigo todas la filas que tengan en la columna "Libro_estado" un numero distinto de 1, 
+el resultado deves meterlo en un areglo "
+
+# Crear un cursor para interactuar con la base de datos
+cursor = conn.cursor()
+
+# Consulta SQL para extraer filas con Libro_estado distinto de 1
+Consulta_libros_prestados = "SELECT * FROM Libro WHERE Libro_estado <> 1"
+
+# Ejecutar la consulta
+cursor.execute(Consulta_libros_prestados)
+
+# Inicializar una lista para almacenar los resultados
+Resultado = []
+
+# Recorrer las filas resultantes y agregarlas al arreglo
+for row in cursor:
+    # Convertir los valores numéricos a cadenas antes de agregarlos
+    Convertir_values = [str(value) if isinstance(value, int) or isinstance(value, float) else value for value in row]
+    Resultado.append(Convertir_values)
+
+# Cerrar el cursor y la conexión a la base de datos
+cursor.close()
+conn.close()
+
+# Verificar si se encontraron resultados
+if Resultado:
+    # Imprimir los resultados formateados
+    for Resultado in Resultado:
+        Resultado_str = [str(value) for value in Resultado]
+        print(Resultado_str)
+else:
+    print("No se encontraron resultados")
+
+'''
+####################################################################################################################################
