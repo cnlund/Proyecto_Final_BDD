@@ -56,11 +56,15 @@ def buscar_cliente(correo):
     cursor = conn.cursor()
     query = ("SELECT * FROM Cliente WHERE Cliente_email LIKE (CAST(? AS VARCHAR(50)))")
     cursor.execute(query, f"%{correo}%")
-    for row in cursor:
-        crear_lista(Respuesta,row.Cliente_id,1, 1, 5)
-        crear_lista(Respuesta,row.Cliente_nombre,2,1,18)
-        crear_lista(Respuesta,row.Cliente_email,3,1,18)
-        crear_lista(Respuesta,row.Cliente_tel,4,1,18)
+    busqueda = cursor.fetchall()
+    if not busqueda:
+        crear_lista(Respuesta,"No se ha encontrado un Cliente que coincida",1,1,50)
+    else:
+        for row in busqueda:
+            crear_lista(Respuesta,row.Cliente_id,1, 1, 5)
+            crear_lista(Respuesta,row.Cliente_nombre,2,1,18)
+            crear_lista(Respuesta,row.Cliente_email,3,1,18)
+            crear_lista(Respuesta,row.Cliente_tel,4,1,18)
 
 ####################################################################################################################################
 
@@ -92,11 +96,21 @@ def cambio_ventana2():
     Contenedor_buscador.place(x=500,y=190)
     Contenedor_lista_clientes.place(x=10,y=190)
     Respuesta.place(x=500,y=300)
+    Agregar_cliente.place(x=500,y=600)
 
 #Definimos una funcion que ejecute el buscador
 def pulsar_buscar_cliente():
+    for widget in Respuesta.winfo_children():
+        widget.destroy()
     email_ingresado = Buscador.get()
     buscar_cliente(email_ingresado)
+
+#Definimos una funcion que desaparece el menu de gestion de clientes y activa el menu de añadir clientes
+def cambio_ventana3():
+    Contenedor_buscador.place_forget()
+    Contenedor_lista_clientes.place_forget()
+    Respuesta.place_forget()
+    Agregar_cliente.place_forget()
 
 ####################################################################################################################################
 
@@ -176,6 +190,13 @@ Buscar.grid(row=1, column=2)
 #Creamos un contenedor donde se inserte el cliente buscado
 Respuesta = tk.Frame(Ventana_1, bg="#181624",padx=5,pady=5)
 
+#Creamos un contenedor donde ira un boton para insertar nuevos clientes
+Agregar_cliente = tk.Frame(Ventana_1, bg="#F5F5F5",padx=5,pady=5)
+
+#Creamos un boton para insertar nuevos clientes
+Boton_agregar_cliente = tk.Button(Agregar_cliente, bg="#C2A5E9", text="Agregar nuevo Cliente", font=Fuente_botones, command=cambio_ventana3)
+Boton_agregar_cliente.pack()
+
 #Creamos un contenedor donde se van a colocar las listas de clientes
 Contenedor_lista_clientes = tk.Frame(Ventana_1, bg="#181624")
 tabla_clientes_existentes(Contenedor_lista_clientes)
@@ -204,11 +225,7 @@ Boton_cerrar2.place(x=1423, y=0)
 
 #Usamos el metodo mainloop para que al ejecutar el codigo la ventana sea visible
 bdd.mainloop()
-
-
-
 ################################ En esta zona hacemos la peticion al sql de los libros que esten prestados ################################
-
 '''
 En la base de datos llamada "Biblioteca" en la que hay una tabla con le nombre 
 "Libro" extraigo todas la filas que tengan en la columna "Libro_estado" un numero distinto de 1, 
@@ -246,4 +263,3 @@ else:
     print("No se encontraron resultados")
 
 '''
-####################################################################################################################################
