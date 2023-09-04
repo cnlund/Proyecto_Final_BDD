@@ -14,6 +14,9 @@ Ingreso:  """)
     elif usuario == "2":
         usuario = "DESKTOP-MR17TOI\MSSQLSERVER01"
         break  # Rompe el bucle si el usuario ingresa un valor válido
+    elif usuario == "3":
+        usuario = "LAPTOP-21HUJ6OP"
+        break  # Rompe el bucle si el usuario ingresa un valor válido
     else:
         print("Opción no válida. Debes ingresar '1' o '2'.")
 
@@ -21,4 +24,3 @@ Ingreso:  """)
 
 
 datosbdd = f"Driver=ODBC Driver 17 for SQL Server; \nServer={usuario}; \nDatabase=Biblioteca; \nTrusted_Connection=yes;"
-print (datosbdd)
