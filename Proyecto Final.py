@@ -97,6 +97,7 @@ def cambio_ventana2():
     Contenedor_lista_clientes.place(x=10,y=190)
     Respuesta.place(x=500,y=300)
     Agregar_cliente.place(x=500,y=600)
+    Boton_regresar.config(command=regreso_ventana2)
 
 #Definimos una funcion que ejecute el buscador
 def pulsar_buscar_cliente():
@@ -111,6 +112,30 @@ def cambio_ventana3():
     Contenedor_lista_clientes.place_forget()
     Respuesta.place_forget()
     Agregar_cliente.place_forget()
+    Boton_regresar.config(command=regreso_ventana3)
+
+#Definimos una funcion que regresa al menu inicial
+def regreso_ventana1():
+    Ventana_1.place_forget()
+    Menu_inicial.place(x=0,y=0,relheight=1,relwidth=1)
+
+#Definimos una funcion que regresa a la ventana1
+def regreso_ventana2():
+    Respuesta.place_forget()
+    Agregar_cliente.place_forget()
+    Contenedor_buscador.place_forget()
+    Contenedor_lista_clientes.place_forget()
+    contenedor.place(x=10,y=180)
+    Contenedor_botones.place(x=700,y=180)
+    Boton_regresar.config(command=regreso_ventana1)
+
+#Definimos una funcion que regresa a la ventana2
+def regreso_ventana3():
+    Contenedor_buscador.place(x=500,y=180)
+    Contenedor_lista_clientes.place(x=10,y=190)
+    Respuesta.place(x=500,y=300)
+    Agregar_cliente.place(x=500,y=600)
+    Boton_regresar.config(command=regreso_ventana2)
 
 ####################################################################################################################################
 
@@ -126,7 +151,7 @@ Fuente_botones2 = font.Font(family = "Fragment Core", size=30)
 Fuente_datos_presentacion = font.Font(family = "Times New Roman", size=40)
 Fuente_titulo_biblioteca = font.Font(family = "Letter ^  Blocks", size=40)
 Fuente_boton_cerrar = font.Font(family = "Fragment Core", size=53)
-Fuente_titulo_biblioteca2 = font.Font(family = "Letter ^  Blocks", size=45)
+Fuente_titulo_biblioteca2 = font.Font(family = "Letter ^  Blocks", size=40)
 
 #Creamos el marco donde almacenaremos la pantalla de inicio del programa
 Menu_inicial = tk.Frame(bdd)
@@ -216,6 +241,10 @@ Separador2.grid(row=4,column=1)
 #Creamos el boton que llevara a la pestaña de recibir libros
 Boton_prestamos = tk.Button(Contenedor_botones, bg="#564E87",text="Recibir Libros", font=Fuente_botones)
 Boton_prestamos.grid(row=5,column=1)
+
+#Creamos un boton con el que podemos retroceder a la ventana anterior
+Boton_regresar = tk.Button(Ventana_1, text="<-", font=Fuente_boton_cerrar, bg="#F5F5F5", command=regreso_ventana1)
+Boton_regresar.place(x=1323,y=0)
 
 #Creamos un boton con el que podamos cerrar la ventana
 Boton_cerrar2 = tk.Button(Ventana_1, text="X", font=Fuente_boton_cerrar, command=cerrar_bdd, bg="red2")
